@@ -1,4 +1,15 @@
 package com.mhgjoker.education.system.service;
 
-public class ExamService {
+import com.mhgjoker.education.system.entity.ExamEntity;
+import org.springframework.data.domain.Page;
+
+public interface ExamService{
+
+    Page<ExamEntity> list(Integer pageNum, Integer pageSize);
+
+    ExamEntity detail(Long id);
+
+    ExamEntity saveOrUpdate(ExamEntity examEntity);
+
+    boolean deleteById(Long id);
 }

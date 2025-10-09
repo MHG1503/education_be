@@ -5,6 +5,7 @@ import com.mhgjoker.education.system.repository.GradeRepository;
 import com.mhgjoker.education.system.service.GradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,21 +16,26 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     public Page<GradeEntity> list(Integer pageNum, Integer pageSize) {
-        return null;
+        return gradeRepository.findAll(PageRequest.of(pageNum, pageSize));
     }
 
     @Override
     public GradeEntity detail(Long id) {
-        return null;
+        return gradeRepository.findById(id).orElse(null);
     }
 
     @Override
     public GradeEntity saveOrUpdate(GradeEntity gradeEntity) {
-        return null;
+        return gradeRepository.save(gradeEntity);
     }
 
     @Override
     public boolean deleteById(Long id) {
-        return false;
+        boolean isDeleted = false;
+        if(gradeRepository.existsById(id)){
+            gradeRepository.deleteById(id);
+            isDeleted = true;
+        }
+        return isDeleted;
     }
 }

@@ -13,7 +13,7 @@ import lombok.*;
 @Entity
 @Builder
 @Table(name = "subject")
-public class SubjectEntity {
+public class SubjectEntity extends BaseEntity{
 
     @Id
     private Long id;

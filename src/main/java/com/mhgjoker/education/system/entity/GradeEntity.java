@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 @Builder
 @Table(name = "grade")
-public class GradeEntity {
+public class GradeEntity extends BaseEntity{
 
     @Id
     private Long id;
