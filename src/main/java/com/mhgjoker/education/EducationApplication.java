@@ -27,20 +27,20 @@ public class EducationApplication implements CommandLineRunner {
 	@Override
 	@Transactional
 	public void run(java.lang.String... args) {
-		for (RoleType roleType : RoleType.values()) {
-			roleRepository.save(new RoleEntity(roleType.getName(), roleType.getDescription()));
-		}
-
-		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-		UserEntity user = UserEntity.builder()
-				.enabled(true)
-				.username("admin")
-				.email("m1503@gmail.com")
-				.password(bCryptPasswordEncoder.encode("12345"))
-				.build();
-
-		RoleEntity role = roleRepository.findByName(RoleType.ADMIN.getName()).get();
-		user.setRole(role);
-		userRepository.save(user);
+//		for (RoleType roleType : RoleType.values()) {
+//			roleRepository.save(new RoleEntity(roleType.getName(), roleType.getDescription()));
+//		}
+//
+//		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//		UserEntity user = UserEntity.builder()
+//				.enabled(true)
+//				.username("admin")
+//				.email("m1503@gmail.com")
+//				.password(bCryptPasswordEncoder.encode("12345"))
+//				.build();
+//
+//		RoleEntity role = roleRepository.findByName(RoleType.ADMIN.getName()).get();
+//		user.setRole(role);
+//		userRepository.save(user);
 	}
 }

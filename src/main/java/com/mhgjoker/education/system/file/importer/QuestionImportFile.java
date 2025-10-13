@@ -1,9 +1,8 @@
-package com.mhgjoker.education.system.file.export;
+package com.mhgjoker.education.system.file.importer;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.context.AnalysisContext;
-import com.alibaba.excel.enums.CellDataTypeEnum;
 import com.alibaba.excel.metadata.Cell;
 import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.read.metadata.holder.ReadRowHolder;
@@ -14,14 +13,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
-@Component
-public class QuestionImportFile extends BaseImporter<QuestionImportFile.QuestionExcelDTO, QuestionEntity>{
+@Slf4j
+public class QuestionImportFile extends BaseImport<QuestionImportFile.QuestionExcelDTO, QuestionEntity>{
+
+    public QuestionImportFile(String action) {
+        this.action = action;
+    }
 
     @Override
     public BaseAnalyzerListener<QuestionExcelDTO, QuestionEntity> getListener() {

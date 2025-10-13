@@ -4,6 +4,8 @@ import com.mhgjoker.education.system.entity.QuestionEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public interface QuestionService {
 
     Page<QuestionEntity> list(Integer pageNum, Integer pageSize);
@@ -14,6 +16,7 @@ public interface QuestionService {
 
     boolean deleteById(Long id);
 
-    void importFile(MultipartFile file);
+    List<QuestionEntity> saveMany(List<QuestionEntity> entities);
 
+    List<QuestionEntity> updateMany(List<QuestionEntity> entities);
 }

@@ -3,7 +3,6 @@ package com.mhgjoker.education.system.dto.request.exam;
 import com.mhgjoker.education.system.entity.GradeEntity;
 import com.mhgjoker.education.system.entity.QuestionEntity;
 import com.mhgjoker.education.system.entity.SubjectEntity;
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

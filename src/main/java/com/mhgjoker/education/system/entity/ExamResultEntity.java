@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,6 +27,9 @@ public class ExamResultEntity {
     @ManyToOne
     @JoinColumn(name = "exam_id")
     private ExamEntity exam;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "examResult", cascade = CascadeType.ALL)
+    private List<UserAnswerEntity> userAnswers;
 
     @Column(name = "score")
     private Double score;

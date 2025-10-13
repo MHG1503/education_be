@@ -1,7 +1,8 @@
 package com.mhgjoker.education.system.controller;
 
 import com.mhgjoker.education.system.dto.request.question.QuestionRequest;
-import com.mhgjoker.education.system.file.export.QuestionImportFile;
+import com.mhgjoker.education.system.file.importer.QuestionImportFile;
+import com.mhgjoker.education.system.file.importer.QuestionImporter;
 import com.mhgjoker.education.system.mapper.QuestionMapper;
 import com.mhgjoker.education.system.service.QuestionService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("api/questions")
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
+    private final QuestionImporter questionImporter;
 
     @GetMapping("/list")
     public ResponseEntity<?> list(@RequestParam("pageNum") Integer pageNum,
@@ -39,11 +43,13 @@ public class QuestionController {
     }
 
     @PostMapping(path = "/import-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> importFile(@RequestParam("file") MultipartFile file) throws Exception {
+    public ResponseEntity<?> importFile(@RequestParam("file") MultipartFile file,
+                                        @RequestParam("action") String action) throws Exception {
         try {
-            questionService.importFile(file);
-            return ResponseEntity.ok("Import dữ liệu thành công");
-
+            Map<String, Integer> rs = questionImporter.importFile(action,file);
+            var successCount = rs.get("success");
+            var totalCount = rs.get("total");
+            return ResponseEntity.ok("Import dữ liệu thành công " + successCount + " / " + totalCount);
         }catch (Exception e){
             return ResponseEntity.internalServerError().build();
         }

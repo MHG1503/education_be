@@ -1,8 +1,6 @@
 package com.mhgjoker.education.system.entity.id;
 
-import com.mhgjoker.education.system.entity.ExamEntity;
-import com.mhgjoker.education.system.entity.OptionEntity;
-import com.mhgjoker.education.system.entity.UserEntity;
+import com.mhgjoker.education.system.entity.*;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -24,8 +22,12 @@ public class UserAnswerId implements Serializable {
     private UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "exam_id")
-    private ExamEntity exam;
+    @JoinColumn(name = "exam_result_id", nullable = false)
+    private ExamResultEntity examResult;
+
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private QuestionEntity question;
 
     @ManyToOne
     @JoinColumn(name = "selected_option_id")
