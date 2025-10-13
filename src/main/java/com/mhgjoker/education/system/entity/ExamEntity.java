@@ -45,6 +45,18 @@ public class ExamEntity extends BaseEntity{
     @JoinColumn(name = "subject_id")
     private SubjectEntity subject;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
+    @JoinTable(
+            name = "exams_question",
+            joinColumns = @JoinColumn(name = "exam_id"),
+            inverseJoinColumns = @JoinColumn(name = "question_id")
+    )
     private Set<QuestionEntity> questions;
+
+    @PreRemove
+    private void removeBeforeDelete(){
+        if(questions != null) {
+            questions.clear();
+        }
+    }
 }

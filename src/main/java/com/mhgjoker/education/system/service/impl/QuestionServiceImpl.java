@@ -1,6 +1,7 @@
 package com.mhgjoker.education.system.service.impl;
 
 import com.mhgjoker.education.system.entity.QuestionEntity;
+import com.mhgjoker.education.system.file.export.QuestionImportFile;
 import com.mhgjoker.education.system.repository.QuestionRepository;
 import com.mhgjoker.education.system.service.QuestionService;
 import lombok.RequiredArgsConstructor;
@@ -8,12 +9,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final QuestionImportFile importer;
 
     @Override
     public Page<QuestionEntity> list(Integer pageNum, Integer pageSize) {
@@ -39,5 +44,16 @@ public class QuestionServiceImpl implements QuestionService {
             isDeleted = true;
         }
         return isDeleted;
+    }
+
+    @Override
+    public void importFile(MultipartFile file) {
+        System.out.println("in");
+        try {
+            List<QuestionEntity> questions = importer.importFile(file);
+            questionRepository.saveAll(questions);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

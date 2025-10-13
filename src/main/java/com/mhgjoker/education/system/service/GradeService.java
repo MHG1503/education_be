@@ -12,4 +12,6 @@ public interface GradeService {
     GradeEntity saveOrUpdate(GradeEntity gradeEntity);
 
     boolean deleteById(Long id);
+
+    void assignSubject(Long gradeId, Long subjectId);
 }

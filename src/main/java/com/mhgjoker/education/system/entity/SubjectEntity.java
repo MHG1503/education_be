@@ -1,9 +1,6 @@
 package com.mhgjoker.education.system.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -12,10 +9,12 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Builder
+@EqualsAndHashCode(of = {"id", "subjectName"},callSuper = true)
 @Table(name = "subject")
 public class SubjectEntity extends BaseEntity{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "subject_name")

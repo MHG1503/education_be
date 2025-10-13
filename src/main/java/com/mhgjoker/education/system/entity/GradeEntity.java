@@ -16,6 +16,7 @@ import java.util.Set;
 public class GradeEntity extends BaseEntity{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "subject_name")

@@ -2,6 +2,7 @@ package com.mhgjoker.education.system.service;
 
 import com.mhgjoker.education.system.entity.QuestionEntity;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface QuestionService {
 
@@ -12,4 +13,7 @@ public interface QuestionService {
     QuestionEntity saveOrUpdate(QuestionEntity QuestionEntity);
 
     boolean deleteById(Long id);
+
+    void importFile(MultipartFile file);
+
 }
