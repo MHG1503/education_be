@@ -1,5 +1,6 @@
 package com.mhgjoker.education.system.service.impl;
 
+import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
 import com.mhgjoker.education.system.dto.request.exam_result.ExamResultRequest;
 import com.mhgjoker.education.system.dto.request.user_answer.UserAnswerRequest;
 import com.mhgjoker.education.system.entity.ExamResultEntity;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,8 +36,16 @@ public class ExamResultServiceImpl implements ExamResultService {
     }
 
     @Override
+    public List<ExamResultEntity> listByUserId(Long userId, Integer pageNum, Integer pageSize) {
+        Pageable pageable =  PageRequest.of(pageNum, pageSize);
+        return examResultRepository.findByUserId(userId, pageable);
+    }
+
+    @Override
     public ExamResultEntity detail(Long id) {
-        return examResultRepository.findById(id).orElse(null);
+        return examResultRepository
+                .findById(id, NamedEntityGraph.fetching("exam_result_with_user_answers"))
+                .orElse(null);
     }
 
     @Override

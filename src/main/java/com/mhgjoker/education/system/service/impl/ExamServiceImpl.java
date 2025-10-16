@@ -1,19 +1,26 @@
 package com.mhgjoker.education.system.service.impl;
 
+import com.mhgjoker.education.system.dto.request.exam.AssignQuestionRequest;
+import com.mhgjoker.education.system.dto.request.exam.RemoveQuestionRequest;
 import com.mhgjoker.education.system.entity.ExamEntity;
+import com.mhgjoker.education.system.entity.QuestionEntity;
 import com.mhgjoker.education.system.repository.ExamRepository;
+import com.mhgjoker.education.system.repository.QuestionRepository;
 import com.mhgjoker.education.system.service.ExamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class ExamServiceImpl implements ExamService {
 
     private final ExamRepository examRepository;
+    private final QuestionRepository questionRepository;
 
     @Override
     public Page<ExamEntity> list(Integer pageNum, Integer pageSize) {
@@ -39,5 +46,30 @@ public class ExamServiceImpl implements ExamService {
             isDeleted = true;
         }
         return isDeleted;
+    }
+
+    @Override
+    public void assignQuestions(AssignQuestionRequest request) {
+        ExamEntity exam = examRepository
+                .findById(request.examId)
+                .orElseThrow(() -> new RuntimeException("Khong tim thay bai kiem tra"));
+
+        Set<QuestionEntity> questions = questionRepository.findByIds(request.getQuestionIds());
+        if(exam.getQuestions() == null){
+            exam.setQuestions(new HashSet<>());
+        }
+        exam.getQuestions().addAll(questions);
+        examRepository.save(exam);
+    }
+
+    @Override
+    public void removeQuestions(RemoveQuestionRequest request) {
+        ExamEntity exam = examRepository
+                .findById(request.examId)
+                .orElseThrow(() -> new RuntimeException("Khong tim thay bai kiem tra"));
+
+        Set<QuestionEntity> questions = questionRepository.findByIds(request.getQuestionIds());
+        exam.getQuestions().removeAll(questions);
+        examRepository.save(exam);
     }
 }

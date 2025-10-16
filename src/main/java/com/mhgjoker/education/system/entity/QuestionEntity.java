@@ -14,7 +14,7 @@ import java.util.Set;
 @Builder
 @Table(name = "question", uniqueConstraints = {
         @UniqueConstraint(
-                columnNames = {"content", "type"}
+                columnNames = {"content", "type", "subject_id"}
         )
 })
 public class QuestionEntity extends BaseEntity{
@@ -23,11 +23,18 @@ public class QuestionEntity extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "content")
+    @Column(name = "content", length = 20000)
     private String content;
 
-    @Column(name = "type")
-    private String type;
+    @Column(name = "imageUrl")
+    private String imageUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    private SubjectEntity subject;
+
+    @Column(name = "level")
+    private String level;
 
     @Column(name = "mark")
     private Integer mark;

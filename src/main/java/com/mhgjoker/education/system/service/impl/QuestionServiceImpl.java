@@ -1,5 +1,6 @@
 package com.mhgjoker.education.system.service.impl;
 
+import com.mhgjoker.education.system.dto.request.question.SearchQuestionRequest;
 import com.mhgjoker.education.system.entity.QuestionEntity;
 import com.mhgjoker.education.system.repository.QuestionRepository;
 import com.mhgjoker.education.system.service.QuestionService;
@@ -17,9 +18,14 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
 
     @Override
-    public Page<QuestionEntity> list(Integer pageNum, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNum, pageSize);
-        return questionRepository.findAll(pageable);
+    public Page<QuestionEntity> list(SearchQuestionRequest request) {
+        Pageable pageable = PageRequest.of(request.pageNum, request.pageSize);
+        String keyword = request.keyword;
+        String type = request.type;
+        String level = request.level;
+        Integer mark = request.mark;
+        Long subjectId = request.subjectId;
+        return questionRepository.search(keyword,type,subjectId,level,mark,pageable);
     }
 
     @Override

@@ -1,9 +1,8 @@
 package com.mhgjoker.education.system.entity;
 
-import com.mhgjoker.education.system.entity.id.UserAnswerId;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
 
 @Getter
 @Setter
@@ -20,6 +19,7 @@ public class UserAnswerEntity extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "exam_result_id", nullable = false)
+    @JsonIgnore
     private ExamResultEntity examResult;
 
     @ManyToOne

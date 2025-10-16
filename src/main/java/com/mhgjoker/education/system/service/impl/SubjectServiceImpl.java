@@ -41,4 +41,11 @@ public class SubjectServiceImpl implements SubjectService {
         }
         return isDeleted;
     }
+
+    @Override
+    public SubjectEntity findBySubjectName(String subjectName) {
+        return subjectRepository
+                .findBySubjectName(subjectName)
+                .orElse(null);
+    }
 }

@@ -2,6 +2,7 @@ package com.mhgjoker.education.system.file.importer;
 
 import com.mhgjoker.education.system.entity.QuestionEntity;
 import com.mhgjoker.education.system.service.QuestionService;
+import com.mhgjoker.education.system.service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -18,11 +19,12 @@ import java.util.Map;
 public class QuestionImporter {
 
     private final QuestionService questionService;
+    private final SubjectService subjectService;
 
-    public Map<String, Integer> importFile(String action, MultipartFile file) {
+    public Map<String, Integer> importFile(String subjectName,String action, MultipartFile file) {
         int successCount = 0;
         int totalCount = 0;
-        QuestionImportFile questionImporter = getQuestionImporter( action);
+        QuestionImportFile questionImporter = getQuestionImporter(action);
         if (questionImporter == null) {
             log.error("Không hỗ trợ ");
             return Map.of(
@@ -32,6 +34,11 @@ public class QuestionImporter {
         }
         try {
             List<QuestionEntity> records = questionImporter.importFile(file.getInputStream());
+
+            //NOTE Gan du lieu cua mon hoc cho question
+            var subject = subjectService.findBySubjectName(subjectName);
+            records.forEach(record -> record.setSubject(subject));
+
             totalCount = records.size();
             int rowIndex = 1;
             List<QuestionEntity> validQuestions = new ArrayList<>();
@@ -85,6 +92,6 @@ public class QuestionImporter {
 
     private boolean validateRow(QuestionEntity question){
         return StringUtils.hasText(question.getContent())
-                && StringUtils.hasText(question.getType());
+                && question.getSubject() != null;
     }
 }

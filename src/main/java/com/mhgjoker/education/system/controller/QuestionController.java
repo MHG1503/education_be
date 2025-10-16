@@ -1,6 +1,7 @@
 package com.mhgjoker.education.system.controller;
 
 import com.mhgjoker.education.system.dto.request.question.QuestionRequest;
+import com.mhgjoker.education.system.dto.request.question.SearchQuestionRequest;
 import com.mhgjoker.education.system.file.importer.QuestionImportFile;
 import com.mhgjoker.education.system.file.importer.QuestionImporter;
 import com.mhgjoker.education.system.mapper.QuestionMapper;
@@ -22,10 +23,9 @@ public class QuestionController {
     private final QuestionMapper questionMapper;
     private final QuestionImporter questionImporter;
 
-    @GetMapping("/list")
-    public ResponseEntity<?> list(@RequestParam("pageNum") Integer pageNum,
-                                  @RequestParam("pageSize") Integer pageSize) {
-        var rs = questionService.list(pageNum, pageSize);
+    @PostMapping("/list")
+    public ResponseEntity<?> list(@RequestBody SearchQuestionRequest request) {
+        var rs = questionService.list(request);
         return ResponseEntity.ok(rs);
     }
 
@@ -44,9 +44,10 @@ public class QuestionController {
 
     @PostMapping(path = "/import-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> importFile(@RequestParam("file") MultipartFile file,
+                                        @RequestParam("subject") String subject,
                                         @RequestParam("action") String action) throws Exception {
         try {
-            Map<String, Integer> rs = questionImporter.importFile(action,file);
+            Map<String, Integer> rs = questionImporter.importFile(subject,action,file);
             var successCount = rs.get("success");
             var totalCount = rs.get("total");
             return ResponseEntity.ok("Import dữ liệu thành công " + successCount + " / " + totalCount);

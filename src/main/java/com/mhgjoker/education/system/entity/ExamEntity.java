@@ -45,7 +45,7 @@ public class ExamEntity extends BaseEntity{
     @JoinColumn(name = "subject_id")
     private SubjectEntity subject;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
     @JoinTable(
             name = "exams_question",
             joinColumns = @JoinColumn(name = "exam_id"),

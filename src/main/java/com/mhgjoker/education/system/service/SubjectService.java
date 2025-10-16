@@ -14,4 +14,6 @@ public interface SubjectService {
     SubjectEntity saveOrUpdate(SubjectEntity subjectEntity);
 
     boolean deleteById(Long id);
+
+    SubjectEntity findBySubjectName(String subjectName);
 }

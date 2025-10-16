@@ -1,11 +1,14 @@
 package com.mhgjoker.education.system.controller;
 
+import com.mhgjoker.education.system.dto.request.exam.AssignQuestionRequest;
 import com.mhgjoker.education.system.dto.request.exam.ExamRequest;
+import com.mhgjoker.education.system.dto.request.exam.RemoveQuestionRequest;
 import com.mhgjoker.education.system.mapper.ExamMapper;
 import com.mhgjoker.education.system.service.ExamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/exams")
@@ -35,6 +38,26 @@ public class ExamController {
         return ResponseEntity.ok(rs);
     }
 
+    @PostMapping("/assign-question")
+    public ResponseEntity<?> assignQuestion(@RequestBody AssignQuestionRequest request) {
+        try {
+            examService.assignQuestions(request);
+            return ResponseEntity.ok("Gan thanh cong cau hoi vao bai thi");
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @DeleteMapping("/remove-question")
+    public ResponseEntity<?> removeQuestion(@RequestBody RemoveQuestionRequest request) {
+        try {
+            examService.removeQuestions(request);
+            return ResponseEntity.ok("Gan thanh cong cau hoi vao bai thi");
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     @DeleteMapping("/delete")
     public ResponseEntity<?> delete(@RequestParam("id") Long id) {
         var rs = examService.deleteById(id);
@@ -43,4 +66,5 @@ public class ExamController {
         }
         return ResponseEntity.ok("Xoa thanh cong");
     }
+
 }

@@ -13,7 +13,16 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "exam_result")
+@Table(name = "exam_result", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id","exam_id"})
+})
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "exam_result_with_user_answers", attributeNodes = {
+                @NamedAttributeNode("user"),
+                @NamedAttributeNode("userAnswers"),
+                @NamedAttributeNode("exam")
+        })
+})
 public class ExamResultEntity {
 
     @Id
