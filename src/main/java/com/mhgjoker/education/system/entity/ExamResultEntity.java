@@ -17,10 +17,12 @@ import java.util.List;
         @UniqueConstraint(columnNames = {"user_id","exam_id"})
 })
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "exam_result_with_user_answers", attributeNodes = {
-                @NamedAttributeNode("user"),
-                @NamedAttributeNode("userAnswers"),
-                @NamedAttributeNode("exam")
+        @NamedEntityGraph(
+                name = "exam_result_with_user_answers",
+                attributeNodes = {
+                    @NamedAttributeNode("user"),
+                    @NamedAttributeNode("userAnswers"),
+                    @NamedAttributeNode("exam")
         })
 })
 public class ExamResultEntity {

@@ -1,5 +1,6 @@
 package com.mhgjoker.education;
 
+import com.cosium.spring.data.jpa.entity.graph.repository.support.EntityGraphJpaRepositoryFactoryBean;
 import com.mhgjoker.education.security.enums.RoleType;
 import com.mhgjoker.education.system.entity.RoleEntity;
 import com.mhgjoker.education.system.entity.UserEntity;
@@ -15,6 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
+@EnableJpaRepositories(repositoryFactoryBeanClass = EntityGraphJpaRepositoryFactoryBean.class)
 public class EducationApplication implements CommandLineRunner {
 	@Autowired
 	private RoleRepository roleRepository;

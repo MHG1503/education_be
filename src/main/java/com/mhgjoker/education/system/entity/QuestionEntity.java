@@ -23,7 +23,7 @@ public class QuestionEntity extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "content", length = 20000)
+    @Column(name = "content", length = 2000)
     private String content;
 
     @Column(name = "imageUrl")
