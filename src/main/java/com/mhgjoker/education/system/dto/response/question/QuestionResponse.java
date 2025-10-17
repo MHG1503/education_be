@@ -1,6 +1,7 @@
-package com.mhgjoker.education.system.dto.request.question;
+package com.mhgjoker.education.system.dto.response.question;
 
 import com.mhgjoker.education.system.dto.request.option.OptionRequest;
+import com.mhgjoker.education.system.dto.response.option.OptionResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionRequest {
+public class QuestionResponse {
 
     private Long id;
 
@@ -20,9 +21,11 @@ public class QuestionRequest {
 
     private Long subjectId;
 
+    private String subjectName;
+
     private String level;
 
     private Integer mark;
 
-    private Set<OptionRequest> options;
+    private Set<OptionResponse> options;
 }

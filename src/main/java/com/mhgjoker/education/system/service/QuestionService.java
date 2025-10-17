@@ -1,5 +1,6 @@
 package com.mhgjoker.education.system.service;
 
+import com.mhgjoker.education.system.dto.request.question.QuestionRequest;
 import com.mhgjoker.education.system.dto.request.question.SearchQuestionRequest;
 import com.mhgjoker.education.system.entity.QuestionEntity;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,7 @@ public interface QuestionService {
 
     QuestionEntity detail(Long id);
 
-    QuestionEntity saveOrUpdate(QuestionEntity QuestionEntity);
+    QuestionEntity saveOrUpdate(QuestionRequest request);
 
     boolean deleteById(Long id);
 

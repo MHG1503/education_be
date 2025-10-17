@@ -22,7 +22,7 @@ public class ExamRequest {
 
      String description;
 
-     LocalDateTime time;
+     String time;
 
      Double totalMarks;
 
@@ -30,9 +30,9 @@ public class ExamRequest {
 
      Boolean isPublished;
 
-     GradeEntity grade;
+     Long gradeId;
 
-     SubjectEntity subject;
+     Long subjectId;
 
-     Set<QuestionEntity> questions;
+     Set<Long> questionIds;
 }

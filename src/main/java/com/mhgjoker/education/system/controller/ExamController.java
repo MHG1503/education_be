@@ -8,7 +8,6 @@ import com.mhgjoker.education.system.service.ExamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/exams")
@@ -33,8 +32,7 @@ public class ExamController {
 
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody ExamRequest request) {
-        var entity = examMapper.requestToEntity(request);
-        var rs = examService.saveOrUpdate(entity);
+        var rs = examService.saveOrUpdate(request);
         return ResponseEntity.ok(rs);
     }
 

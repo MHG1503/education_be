@@ -1,6 +1,7 @@
 package com.mhgjoker.education.system.service;
 
 import com.mhgjoker.education.system.dto.request.exam.AssignQuestionRequest;
+import com.mhgjoker.education.system.dto.request.exam.ExamRequest;
 import com.mhgjoker.education.system.dto.request.exam.RemoveQuestionRequest;
 import com.mhgjoker.education.system.entity.ExamEntity;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,7 @@ public interface ExamService{
 
     ExamEntity detail(Long id);
 
-    ExamEntity saveOrUpdate(ExamEntity examEntity);
+    ExamEntity saveOrUpdate(ExamRequest request);
 
     boolean deleteById(Long id);
 

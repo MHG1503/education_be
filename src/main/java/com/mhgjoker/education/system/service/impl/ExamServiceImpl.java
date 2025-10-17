@@ -1,6 +1,7 @@
 package com.mhgjoker.education.system.service.impl;
 
 import com.mhgjoker.education.system.dto.request.exam.AssignQuestionRequest;
+import com.mhgjoker.education.system.dto.request.exam.ExamRequest;
 import com.mhgjoker.education.system.dto.request.exam.RemoveQuestionRequest;
 import com.mhgjoker.education.system.entity.ExamEntity;
 import com.mhgjoker.education.system.entity.QuestionEntity;
@@ -34,8 +35,20 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
-    public ExamEntity saveOrUpdate(ExamEntity examEntity) {
-        return examRepository.save(examEntity);
+    public ExamEntity saveOrUpdate(ExamRequest request) {
+        // TODO chua xong method nay
+        String title = request.getTitle();
+        String description = request.getDescription();
+        String time = request.getTime();
+        Double totalMark = request.getTotalMarks();
+        Integer durationMinutes = request.getDurationMinutes();
+        Boolean isPublished = request.getIsPublished();
+        Long gradeId = request.getGradeId();
+        Long subjectId = request.getSubjectId();
+
+        ExamEntity exam;
+//        return examRepository.save(exam);
+        return null;
     }
 
     @Override

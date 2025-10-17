@@ -2,7 +2,6 @@ package com.mhgjoker.education.system.controller;
 
 import com.mhgjoker.education.system.dto.request.question.QuestionRequest;
 import com.mhgjoker.education.system.dto.request.question.SearchQuestionRequest;
-import com.mhgjoker.education.system.file.importer.QuestionImportFile;
 import com.mhgjoker.education.system.file.importer.QuestionImporter;
 import com.mhgjoker.education.system.mapper.QuestionMapper;
 import com.mhgjoker.education.system.service.QuestionService;
@@ -37,8 +36,8 @@ public class QuestionController {
 
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody QuestionRequest request) {
-        var entity = questionMapper.requestToEntity(request);
-        var rs = questionService.saveOrUpdate(entity);
+        var rs = questionMapper
+                .entityToResponse(questionService.saveOrUpdate(request));
         return ResponseEntity.ok(rs);
     }
 
