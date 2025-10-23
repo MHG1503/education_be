@@ -9,13 +9,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<QuestionEntity,Long> {
 
     @Query("SELECT qe FROM QuestionEntity qe WHERE qe.id IN :ids")
-    Set<QuestionEntity> findByIds(@Param("ids") List<Long> ids);
+    List<QuestionEntity> findByIds(@Param("ids") List<Long> ids);
 
     @Query(value = """
             SELECT * FROM question

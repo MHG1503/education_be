@@ -1,12 +1,7 @@
 package com.mhgjoker.education.system.dto.request.exam;
 
-import com.mhgjoker.education.system.entity.GradeEntity;
-import com.mhgjoker.education.system.entity.QuestionEntity;
-import com.mhgjoker.education.system.entity.SubjectEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter

@@ -13,6 +13,13 @@ import java.util.Set;
 @Entity
 @Builder
 @Table(name = "exam")
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "exam_with_grade_subject_questions",attributeNodes = {
+                @NamedAttributeNode("grade"),
+                @NamedAttributeNode("subject"),
+                @NamedAttributeNode("questions")
+        })
+})
 public class ExamEntity extends BaseEntity{
 
     @Id
@@ -33,6 +40,9 @@ public class ExamEntity extends BaseEntity{
 
     @Column(name = "duration_minutes")
     private Integer durationMinutes;
+
+    @Column(name = "published_year")
+    private Integer publishedYear;
 
     @Column(name = "is_published")
     private Boolean isPublished;

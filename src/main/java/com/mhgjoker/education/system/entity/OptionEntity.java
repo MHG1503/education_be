@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "options")
+@Table(name = "options", uniqueConstraints = @UniqueConstraint(columnNames = {"question_id", "content"}))
 public class OptionEntity extends BaseEntity{
 
     @Id

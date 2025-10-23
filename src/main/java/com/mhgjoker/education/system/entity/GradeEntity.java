@@ -25,6 +25,10 @@ public class GradeEntity extends BaseEntity{
     @Column(name = "image_url")
     private String imageUrl;
 
+    @ManyToOne
+    @JoinColumn(name = "education_level_id")
+    private EducationLevelEntity educationLevel;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "grades_subjects",
             joinColumns = @JoinColumn(name = "grade_id"),
