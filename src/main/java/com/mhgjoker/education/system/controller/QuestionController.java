@@ -22,8 +22,15 @@ public class QuestionController {
     private final QuestionMapper questionMapper;
     private final QuestionImporter questionImporter;
 
-    @PostMapping("/list")
-    public ResponseEntity<?> list(@RequestBody SearchQuestionRequest request) {
+    @GetMapping("/list")
+    public ResponseEntity<?> list(@RequestParam(name = "keyword", required = false) String keyword,
+                                  @RequestParam(name = "type", required = false) String type,
+                                  @RequestParam(name = "subjectId", required = false) Long subjectId,
+                                  @RequestParam(name = "level", required = false) String level,
+                                  @RequestParam(name = "mark", required = false) Integer mark,
+                                  @RequestParam(name = "pageNum", required = false, defaultValue = "0") Integer pageNum,
+                                  @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize) {
+        SearchQuestionRequest request = new SearchQuestionRequest(keyword, type, subjectId, level, mark, pageNum, pageSize);
         var rs = questionService.list(request);
         return ResponseEntity.ok(rs);
     }

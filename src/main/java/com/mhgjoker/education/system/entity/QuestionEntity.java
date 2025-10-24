@@ -39,7 +39,7 @@ public class QuestionEntity extends BaseEntity{
     @Column(name = "mark")
     private Integer mark;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "question")
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "question")
     private Set<OptionEntity> options;
 
     public QuestionEntity() {

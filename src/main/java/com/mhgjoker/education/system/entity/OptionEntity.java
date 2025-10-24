@@ -1,5 +1,6 @@
 package com.mhgjoker.education.system.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,7 @@ public class OptionEntity extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
+    @JsonIgnore
     private QuestionEntity question;
 
     @Column(name = "content")
