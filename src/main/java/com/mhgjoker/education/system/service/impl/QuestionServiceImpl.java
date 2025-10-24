@@ -32,11 +32,10 @@ public class QuestionServiceImpl implements QuestionService {
     public Page<QuestionEntity> list(SearchQuestionRequest request) {
         Pageable pageable = PageRequest.of(request.pageNum, request.pageSize);
         String keyword = request.keyword;
-        String type = request.type;
         String level = request.level;
         Integer mark = request.mark;
         Long subjectId = request.subjectId;
-        return questionRepository.search(keyword,type,subjectId,level,mark,pageable);
+        return questionRepository.search(keyword,subjectId,level,mark,pageable);
     }
 
     @Override

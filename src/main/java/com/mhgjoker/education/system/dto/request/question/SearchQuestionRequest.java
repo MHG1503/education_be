@@ -10,7 +10,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PUBLIC)
 public class SearchQuestionRequest {
     String keyword;
-    String type;
     Long subjectId;
     String level;
     Integer mark;

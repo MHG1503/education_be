@@ -21,14 +21,12 @@ public interface QuestionRepository extends JpaRepository<QuestionEntity,Long> {
     @Query(value = """
             SELECT * FROM question
             WHERE (:keyword IS NULL OR content LIKE %:keyword%)
-            AND (:type IS NULL OR type = :type)
             AND (:subjectId IS NULL OR subject_id = :subjectId)
             AND (:level IS NULL OR level = :level)
             AND (:mark IS NULL OR mark = :mark)
             """,
             nativeQuery = true)
     Page<QuestionEntity> search(@Param("keyword") String keyword,
-                                        @Param("type") String type,
                                         @Param("subjectId") Long subjectId,
                                         @Param("level") String level,
                                         @Param("mark") Integer mark,
