@@ -1,17 +1,20 @@
 package com.mhgjoker.education.system.service;
 
-import com.mhgjoker.education.system.entity.GradeEntity;
-import org.springframework.data.domain.Page;
+import com.mhgjoker.education.system.dto.request.grade.GradeRequest;
+import com.mhgjoker.education.system.dto.response.grade.GradeResponse;
+import com.mhgjoker.education.system.entity.PaginatedResponse;
 
 public interface GradeService {
 
-    Page<GradeEntity> list(Integer pageNum, Integer pageSize);
+    PaginatedResponse<GradeResponse> list(Integer pageNum, Integer pageSize);
 
-    GradeEntity detail(Long id);
+    GradeResponse detail(Long id);
 
-    GradeEntity saveOrUpdate(GradeEntity gradeEntity);
+    GradeResponse saveOrUpdate(GradeRequest request);
 
     boolean deleteById(Long id);
 
     void assignSubject(Long gradeId, Long subjectId);
+
+    void removeSubject(Long gradeId, Long subjectId);
 }

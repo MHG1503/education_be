@@ -1,21 +1,16 @@
 package com.mhgjoker.education.system.dto.response.exam;
 
-import com.mhgjoker.education.system.dto.response.grade.GradeLazyResponse;
-import com.mhgjoker.education.system.dto.response.grade.GradeResponse;
-import com.mhgjoker.education.system.dto.response.question.QuestionResponse;
-import com.mhgjoker.education.system.dto.response.subject.SubjectResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExamResponse {
+public class ExamLazyResponse {
 
     private Long id;
 
@@ -31,10 +26,7 @@ public class ExamResponse {
 
     private Boolean isPublished;
 
-    private GradeLazyResponse grade;
+    private String gradeName;
 
-    private SubjectResponse subject;
-
-    private Set<QuestionResponse> questions;
-
+    private String subjectName;
 }

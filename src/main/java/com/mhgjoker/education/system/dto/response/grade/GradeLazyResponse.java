@@ -1,24 +1,19 @@
 package com.mhgjoker.education.system.dto.response.grade;
 
-import com.mhgjoker.education.system.dto.response.subject.SubjectResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GradeResponse {
+public class GradeLazyResponse {
 
     private Long id;
 
     private String gradeName;
 
     private String educationLevelName;
-
-    private List<SubjectResponse> subjects;
 }

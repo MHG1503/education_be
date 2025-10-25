@@ -2,6 +2,8 @@ package com.mhgjoker.education.system.service;
 
 import com.mhgjoker.education.system.dto.request.question.QuestionRequest;
 import com.mhgjoker.education.system.dto.request.question.SearchQuestionRequest;
+import com.mhgjoker.education.system.dto.response.question.QuestionResponse;
+import com.mhgjoker.education.system.entity.PaginatedResponse;
 import com.mhgjoker.education.system.entity.QuestionEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,17 +12,17 @@ import java.util.List;
 
 public interface QuestionService {
 
-    Page<QuestionEntity> list(SearchQuestionRequest request);
+    PaginatedResponse<QuestionResponse> list(SearchQuestionRequest request);
 
-    QuestionEntity detail(Long id);
+    QuestionResponse detail(Long id);
 
-    QuestionEntity saveOrUpdate(QuestionRequest request);
+    QuestionResponse saveOrUpdate(QuestionRequest request);
 
     boolean deleteById(Long id);
 
-    List<QuestionEntity> saveMany(List<QuestionEntity> entities);
+    List<QuestionResponse> saveMany(List<QuestionEntity> entities);
 
-    List<QuestionEntity> updateMany(List<QuestionEntity> entities);
+    List<QuestionResponse> updateMany(List<QuestionEntity> entities);
 
 
 }

@@ -3,6 +3,8 @@ package com.mhgjoker.education.system.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,4 +20,13 @@ public class EducationLevelEntity {
     private String code;   // Ví dụ: "THCS", "THPT"
     private String name;   // Ví dụ: "Trung học cơ sở", "Trung học phổ thông"
 
+    @OneToMany(mappedBy = "educationLevel")
+    private List<GradeEntity> grades;
+
+    @PreRemove
+    private void removeAssociation(){
+        for (var grade : grades){
+            grade.setEducationLevel(null);
+        }
+    }
 }

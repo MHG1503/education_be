@@ -18,44 +18,27 @@ public class ExamResultController {
     private final CurrentUserUtils currentUserUtils;
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@RequestParam("pageNum") Integer pageNum,
-                                  @RequestParam("pageSize") Integer pageSize) {
+    public ResponseEntity<?> list(@RequestParam(name = "pageNum", required = false, defaultValue = "0") Integer pageNum,
+                                  @RequestParam(name = "pageSize",required = false, defaultValue = "5") Integer pageSize) {
         var rs = examResultService.list(pageNum, pageSize);
-        return ResponseEntity.ok(rs);
-    }
-
-    @GetMapping("/list_by_user")
-    @PreFilter("hasRole('USER')")
-    public ResponseEntity<?> listByUserId(@RequestParam("pageNum") Integer pageNum,
-                                          @RequestParam("pageSize") Integer pageSize) {
-        UserEntity user = currentUserUtils.getCurrentUser();
-        var rs = examResultService.listByUserId(user.getId(), pageNum, pageSize);
         return ResponseEntity.ok(rs);
     }
 
     @GetMapping("/list_by_admin")
     @PreFilter("hasRole('ADMIN')")
     public ResponseEntity<?> listByAdminRoleAndUserId(@RequestParam("userId") Long userId,
-                                                      @RequestParam("pageNum") Integer pageNum,
-                                                      @RequestParam("pageSize") Integer pageSize) {
+                                                      @RequestParam(name = "pageNum",required = false, defaultValue = "0") Integer pageNum,
+                                                      @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize) {
         var rs = examResultService.listByUserId(userId, pageNum, pageSize);
         return ResponseEntity.ok(rs);
     }
 
-    @GetMapping("/detail")
-    public ResponseEntity<?> detail(@RequestParam("id") Long id) {
-        var rs = examResultService.detail(id);
+    @GetMapping("/detail_by_admin")
+    @PreFilter("hasRole('ADMIN')")
+    public ResponseEntity<?> detail(@RequestParam("userId") Long userId,
+                                    @RequestParam("examId") Long examId) {
+        var rs = examResultService.detailByUserIdAndExamId(userId, examId);
         return ResponseEntity.ok(rs);
-    }
-
-    @PostMapping("/submit_exam")
-    public ResponseEntity<?> save(@RequestBody ExamResultRequest request) {
-        try {
-            examResultService.submitExam(request);
-            return ResponseEntity.ok("Submit bai thanh cong");
-        }catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
     }
 
     @DeleteMapping("/delete")

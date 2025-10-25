@@ -2,7 +2,7 @@ package com.mhgjoker.education.system.controller;
 
 import com.mhgjoker.education.system.dto.request.grade.AssignSubjectToGradeRequest;
 import com.mhgjoker.education.system.dto.request.grade.GradeRequest;
-import com.mhgjoker.education.system.mapper.GradeMapper;
+import com.mhgjoker.education.system.dto.request.grade.RemoveSubjectFromGradeRequest;
 import com.mhgjoker.education.system.service.GradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.*;
 public class GradeController {
 
     private final GradeService gradeService;
-    private final GradeMapper gradeMapper;
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@RequestParam("pageNum") Integer pageNum,
-                                  @RequestParam("pageSize") Integer pageSize){
+    public ResponseEntity<?> list(@RequestParam(name = "pageNum", required = false,defaultValue = "0") Integer pageNum,
+                                  @RequestParam(name = "pageSize", required = false,defaultValue = "5") Integer pageSize){
         var rs = gradeService.list(pageNum, pageSize);
 
         return ResponseEntity.ok(rs);
@@ -32,14 +31,12 @@ public class GradeController {
 
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody GradeRequest request){
-        var entity = gradeMapper.requestToEntity(request);
-
-        var rs = gradeService.saveOrUpdate(entity);
+        var rs = gradeService.saveOrUpdate(request);
 
         return ResponseEntity.ok(rs);
     }
 
-    @PostMapping("assign-subject")
+    @PostMapping("/assign-subject")
     public ResponseEntity<?> assignSubjectToGrade(@RequestBody AssignSubjectToGradeRequest request){
         if(request.gradeId == null || request.subjectId == null){
             throw new RuntimeException("Thieu thong tin dau vao cua grade hoac subject");
@@ -52,7 +49,20 @@ public class GradeController {
         }
     }
 
-    @DeleteMapping("/remove")
+    @PostMapping("/remove-subject")
+    public ResponseEntity<?> removeSubjectFromGrade(@RequestBody RemoveSubjectFromGradeRequest request){
+        if(request.gradeId == null || request.subjectId == null){
+            throw new RuntimeException("Thieu thong tin dau vao cua grade hoac subject");
+        }
+        try {
+            gradeService.removeSubject(request.gradeId, request.subjectId);
+            return ResponseEntity.ok("Xoa thanh cong mon hoc tu lop");
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().body("Gan du lieu that bai!");
+        }
+    }
+
+    @DeleteMapping("/delete")
     public ResponseEntity<?> remove(@RequestParam("id") Long id){
         var rs = gradeService.deleteById(id);
         if(rs){

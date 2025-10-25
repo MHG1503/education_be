@@ -1,12 +1,13 @@
 package com.mhgjoker.education.system.service.impl;
 
-import com.mhgjoker.education.system.entity.RoleEntity;
+import com.mhgjoker.education.system.dto.request.subject.SubjectRequest;
+import com.mhgjoker.education.system.dto.response.subject.SubjectResponse;
+import com.mhgjoker.education.system.entity.PaginatedResponse;
 import com.mhgjoker.education.system.entity.SubjectEntity;
-import com.mhgjoker.education.system.entity.UserEntity;
+import com.mhgjoker.education.system.mapper.SubjectMapper;
 import com.mhgjoker.education.system.repository.SubjectRepository;
 import com.mhgjoker.education.system.service.SubjectService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -15,21 +16,31 @@ import org.springframework.stereotype.Service;
 public class SubjectServiceImpl implements SubjectService {
 
     private final SubjectRepository subjectRepository;
+    private final SubjectMapper subjectMapper;
 
     @Override
-    public Page<SubjectEntity> list(Integer pageNum, Integer pageSize) {
+    public PaginatedResponse<SubjectResponse> list(Integer pageNum, Integer pageSize) {
         var pageable = PageRequest.of(pageNum,pageSize);
-        return subjectRepository.findAll(pageable);
+        var rs = subjectRepository.findAll(pageable);
+
+        var content = rs.getContent().stream().map(subjectMapper::entityToResponse).toList();
+        return new PaginatedResponse<>(
+                rs.getContent().stream().map(subjectMapper::entityToResponse).toList(),
+                rs.getTotalPages(),
+                rs.getNumber(),
+                rs.getTotalElements()
+        );
     }
 
     @Override
-    public SubjectEntity detail(Long id) {
-        return subjectRepository.findById(id).orElse(null);
+    public SubjectResponse detail(Long id) {
+        return subjectMapper.entityToResponse(subjectRepository.findById(id).orElse(null));
     }
 
     @Override
-    public SubjectEntity saveOrUpdate(SubjectEntity subjectEntity) {
-        return subjectRepository.save(subjectEntity);
+    public SubjectResponse saveOrUpdate(SubjectRequest request) {
+        var subjectEntity = subjectMapper.requestToEntity(request);
+        return subjectMapper.entityToResponse(subjectRepository.save(subjectEntity));
     }
 
     @Override

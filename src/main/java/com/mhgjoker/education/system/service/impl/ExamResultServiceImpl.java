@@ -5,6 +5,7 @@ import com.mhgjoker.education.system.dto.request.exam_result.ExamResultRequest;
 import com.mhgjoker.education.system.dto.request.user_answer.UserAnswerRequest;
 import com.mhgjoker.education.system.entity.ExamResultEntity;
 import com.mhgjoker.education.system.entity.UserAnswerEntity;
+import com.mhgjoker.education.system.entity.UserEntity;
 import com.mhgjoker.education.system.repository.ExamRepository;
 import com.mhgjoker.education.system.repository.ExamResultRepository;
 import com.mhgjoker.education.system.repository.OptionRepository;
@@ -64,13 +65,14 @@ public class ExamResultServiceImpl implements ExamResultService {
     }
 
     @Override
-    public void submitExam(ExamResultRequest request) {
+    public void submitExam(UserEntity user, ExamResultRequest request) {
         ExamResultEntity examResult = new ExamResultEntity();
         var exam = examRepository
                 .findById(request.examId)
                 .orElseThrow(() -> new RuntimeException("Khong tim thay thong tin bai kiem tra!"));
 
         examResult.setExam(exam);
+        examResult.setUser(user);
         examResult.setStartedAt(request.getStartedAt());
         examResult.setFinishedAt(request.getFinishedAt());
 
@@ -100,5 +102,12 @@ public class ExamResultServiceImpl implements ExamResultService {
         examResult.setScore(totalMark);
 
         examResultRepository.save(examResult);
+    }
+
+    @Override
+    public ExamResultEntity detailByUserIdAndExamId(Long userId, Long examId) {
+        return examResultRepository
+                .findByUserIdAndExamId(userId, examId, NamedEntityGraph.fetching("exam_result_with_user_answers"))
+                .orElse(null);
     }
 }

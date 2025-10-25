@@ -23,7 +23,7 @@ public class OptionController {
         return ResponseEntity.ok(rs);
     }
 
-    @DeleteMapping("/remove")
+    @DeleteMapping("/delete")
     public ResponseEntity<?> remove(@RequestParam("id") Long id){
         var rs = optionService.deleteById(id);
         if(rs){

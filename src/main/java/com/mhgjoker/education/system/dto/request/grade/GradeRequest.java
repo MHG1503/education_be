@@ -10,8 +10,8 @@ public class GradeRequest {
 
     private Long id;
 
-    private String subjectName;
+    private String gradeName;
 
-    private String imageUrl;
+    private Long educationLevelId;
 
 }

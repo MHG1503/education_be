@@ -1,5 +1,6 @@
 package com.mhgjoker.education.system.file.importer;
 
+import com.mhgjoker.education.system.dto.response.question.QuestionResponse;
 import com.mhgjoker.education.system.entity.QuestionEntity;
 import com.mhgjoker.education.system.service.QuestionService;
 import com.mhgjoker.education.system.service.SubjectService;
@@ -53,7 +54,7 @@ public class QuestionImporter {
                 try {
                     int end = Math.min(i + chunkSize, validQuestions.size());
                     List<QuestionEntity> chunk = validQuestions.subList(i, end);
-                    List<QuestionEntity> savedItems;
+                    List<QuestionResponse> savedItems;
 
                     if (action.equals("update")) {
                         savedItems = questionService.updateMany(chunk);

@@ -19,7 +19,6 @@ import java.util.Map;
 public class QuestionController {
 
     private final QuestionService questionService;
-    private final QuestionMapper questionMapper;
     private final QuestionImporter questionImporter;
 
     @GetMapping("/list")
@@ -42,8 +41,7 @@ public class QuestionController {
 
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody QuestionRequest request) {
-        var rs = questionMapper
-                .entityToResponse(questionService.saveOrUpdate(request));
+        var rs = questionService.saveOrUpdate(request);
         return ResponseEntity.ok(rs);
     }
 

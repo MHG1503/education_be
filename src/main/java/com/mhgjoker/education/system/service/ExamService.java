@@ -3,16 +3,19 @@ package com.mhgjoker.education.system.service;
 import com.mhgjoker.education.system.dto.request.exam.AssignQuestionRequest;
 import com.mhgjoker.education.system.dto.request.exam.ExamRequest;
 import com.mhgjoker.education.system.dto.request.exam.RemoveQuestionRequest;
+import com.mhgjoker.education.system.dto.response.exam.ExamLazyResponse;
+import com.mhgjoker.education.system.dto.response.exam.ExamResponse;
 import com.mhgjoker.education.system.entity.ExamEntity;
+import com.mhgjoker.education.system.entity.PaginatedResponse;
 import org.springframework.data.domain.Page;
 
 public interface ExamService{
 
-    Page<ExamEntity> list(Integer pageNum, Integer pageSize);
+    PaginatedResponse<ExamLazyResponse> list(Integer pageNum, Integer pageSize);
 
-    ExamEntity detail(Long id);
+    ExamResponse detail(Long id);
 
-    ExamEntity saveOrUpdate(ExamRequest request);
+    ExamResponse saveOrUpdate(ExamRequest request);
 
     boolean deleteById(Long id);
 

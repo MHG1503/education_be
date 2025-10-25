@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.*;
 public class SubjectController {
 
     private final SubjectService subjectService;
-    private final SubjectMapper subjectMapper;
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@RequestParam("pageNum") Integer pageNum,
-                               @RequestParam("pageSize") Integer pageSize) {
+    public ResponseEntity<?> list(@RequestParam(name = "pageNum", required = false, defaultValue = "0") Integer pageNum,
+                               @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize) {
         var rs = subjectService.list(pageNum, pageSize);
         return ResponseEntity.ok(rs);
     }
@@ -31,8 +30,7 @@ public class SubjectController {
 
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody SubjectRequest request) {
-        var entity = subjectMapper.requestToEntity(request);
-        var rs = subjectService.saveOrUpdate(entity);
+        var rs = subjectService.saveOrUpdate(request);
         return ResponseEntity.ok(rs);
     }
 

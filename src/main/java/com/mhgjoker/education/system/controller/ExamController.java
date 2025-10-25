@@ -3,7 +3,6 @@ package com.mhgjoker.education.system.controller;
 import com.mhgjoker.education.system.dto.request.exam.AssignQuestionRequest;
 import com.mhgjoker.education.system.dto.request.exam.ExamRequest;
 import com.mhgjoker.education.system.dto.request.exam.RemoveQuestionRequest;
-import com.mhgjoker.education.system.mapper.ExamMapper;
 import com.mhgjoker.education.system.service.ExamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +14,10 @@ import org.springframework.web.bind.annotation.*;
 public class ExamController {
 
     private final ExamService examService;
-    private final ExamMapper examMapper;
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@RequestParam("pageNum") Integer pageNum,
-                                  @RequestParam("pageSize") Integer pageSize) {
+    public ResponseEntity<?> list(@RequestParam(name = "pageNum",required = false, defaultValue = "0") Integer pageNum,
+                                  @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize) {
         var rs = examService.list(pageNum, pageSize);
         return ResponseEntity.ok(rs);
     }
@@ -46,11 +44,11 @@ public class ExamController {
         }
     }
 
-    @DeleteMapping("/remove-question")
+    @PostMapping("/remove-question")
     public ResponseEntity<?> removeQuestion(@RequestBody RemoveQuestionRequest request) {
         try {
             examService.removeQuestions(request);
-            return ResponseEntity.ok("Gan thanh cong cau hoi vao bai thi");
+            return ResponseEntity.ok("Xoa thanh cong cau hoi ra khoi bai thi");
         }catch (Exception e){
             return ResponseEntity.internalServerError().build();
         }

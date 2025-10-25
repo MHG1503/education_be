@@ -1,5 +1,6 @@
 package com.mhgjoker.education.system.mapper;
 
+import com.mhgjoker.education.system.dto.response.exam.ExamLazyResponse;
 import com.mhgjoker.education.system.dto.response.exam.ExamResponse;
 import com.mhgjoker.education.system.entity.ExamEntity;
 import org.mapstruct.Mapper;
@@ -19,4 +20,15 @@ public interface ExamMapper{
     @Mapping(source = "subject", target = "subject")
     @Mapping(source = "questions", target = "questions")
     ExamResponse entityToResponse(ExamEntity exam);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "title", target = "title")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "time", target = "time")
+    @Mapping(source = "totalMarks", target = "totalMarks")
+    @Mapping(source = "durationMinutes", target = "durationMinutes")
+    @Mapping(source = "isPublished", target = "isPublished")
+    @Mapping(source = "grade.gradeName", target = "gradeName")
+    @Mapping(source = "subject.subjectName", target = "subjectName")
+    ExamLazyResponse entityToLazyResponse(ExamEntity exam);
 }

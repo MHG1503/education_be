@@ -2,7 +2,6 @@ package com.mhgjoker.education.system.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,13 +18,10 @@ public class GradeEntity extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "subject_name")
-    private String subjectName;
+    @Column(name = "grade_name")
+    private String gradeName;
 
-    @Column(name = "image_url")
-    private String imageUrl;
-
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "education_level_id")
     private EducationLevelEntity educationLevel;
 
@@ -34,4 +30,9 @@ public class GradeEntity extends BaseEntity{
             joinColumns = @JoinColumn(name = "grade_id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id"))
     private Set<SubjectEntity> subjects = new HashSet<>();
+
+    @PreRemove
+    private void removeAssociation(){
+        subjects.clear();
+    }
 }

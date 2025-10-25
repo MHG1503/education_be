@@ -3,9 +3,12 @@ package com.mhgjoker.education.system.service.impl;
 import com.mhgjoker.education.system.dto.request.option.OptionRequest;
 import com.mhgjoker.education.system.dto.request.question.QuestionRequest;
 import com.mhgjoker.education.system.dto.request.question.SearchQuestionRequest;
+import com.mhgjoker.education.system.dto.response.question.QuestionResponse;
 import com.mhgjoker.education.system.entity.OptionEntity;
+import com.mhgjoker.education.system.entity.PaginatedResponse;
 import com.mhgjoker.education.system.entity.QuestionEntity;
 import com.mhgjoker.education.system.entity.SubjectEntity;
+import com.mhgjoker.education.system.mapper.QuestionMapper;
 import com.mhgjoker.education.system.repository.QuestionRepository;
 import com.mhgjoker.education.system.repository.SubjectRepository;
 import com.mhgjoker.education.system.service.QuestionService;
@@ -27,24 +30,36 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
     private final SubjectRepository subjectRepository;
+    private final QuestionMapper questionMapper;
 
     @Override
-    public Page<QuestionEntity> list(SearchQuestionRequest request) {
+    public PaginatedResponse<QuestionResponse> list(SearchQuestionRequest request) {
         Pageable pageable = PageRequest.of(request.pageNum, request.pageSize);
         String keyword = request.keyword;
         String level = request.level;
         Integer mark = request.mark;
         Long subjectId = request.subjectId;
-        return questionRepository.search(keyword,subjectId,level,mark,pageable);
+        var rs = questionRepository.search(keyword,subjectId,level,mark,pageable);
+
+        return new PaginatedResponse<>(
+                rs.getContent().stream().map(questionMapper::entityToResponse).toList(),
+                rs.getTotalPages(),
+                rs.getNumber(),
+                rs.getTotalElements()
+        );
     }
 
     @Override
-    public QuestionEntity detail(Long id) {
-        return questionRepository.findById(id).orElse(null);
+    public QuestionResponse detail(Long id) {
+        return questionMapper
+                .entityToResponse(questionRepository
+                        .findById(id).
+                        orElse(null)
+                );
     }
 
     @Override
-    public QuestionEntity saveOrUpdate(QuestionRequest request) {
+    public QuestionResponse saveOrUpdate(QuestionRequest request) {
         Long subjectId = request.getSubjectId();
         Long questionId = request.getId();
         String level = request.getLevel();
@@ -71,7 +86,7 @@ public class QuestionServiceImpl implements QuestionService {
         question.setMark(mark);
 
         updateOptions(question,optionsReq);
-        return questionRepository.save(question);
+        return questionMapper.entityToResponse(questionRepository.save(question));
     }
 
     private void updateOptions(QuestionEntity question, Set<OptionRequest> optionsReq) {
@@ -115,12 +130,12 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionEntity> saveMany(List<QuestionEntity> entities) {
-        return questionRepository.saveAll(entities);
+    public List<QuestionResponse> saveMany(List<QuestionEntity> entities) {
+        return questionRepository.saveAll(entities).stream().map(questionMapper::entityToResponse).toList();
     }
 
     @Override
-    public List<QuestionEntity> updateMany(List<QuestionEntity> entities) {
-        return questionRepository.saveAll(entities);
+    public List<QuestionResponse> updateMany(List<QuestionEntity> entities) {
+        return questionRepository.saveAll(entities).stream().map(questionMapper::entityToResponse).toList();
     }
 }

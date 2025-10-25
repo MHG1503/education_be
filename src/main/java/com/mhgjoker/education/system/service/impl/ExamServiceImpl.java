@@ -4,17 +4,16 @@ import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
 import com.mhgjoker.education.system.dto.request.exam.AssignQuestionRequest;
 import com.mhgjoker.education.system.dto.request.exam.ExamRequest;
 import com.mhgjoker.education.system.dto.request.exam.RemoveQuestionRequest;
-import com.mhgjoker.education.system.entity.ExamEntity;
-import com.mhgjoker.education.system.entity.GradeEntity;
-import com.mhgjoker.education.system.entity.QuestionEntity;
-import com.mhgjoker.education.system.entity.SubjectEntity;
+import com.mhgjoker.education.system.dto.response.exam.ExamLazyResponse;
+import com.mhgjoker.education.system.dto.response.exam.ExamResponse;
+import com.mhgjoker.education.system.entity.*;
+import com.mhgjoker.education.system.mapper.ExamMapper;
 import com.mhgjoker.education.system.repository.ExamRepository;
 import com.mhgjoker.education.system.repository.GradeRepository;
 import com.mhgjoker.education.system.repository.QuestionRepository;
 import com.mhgjoker.education.system.repository.SubjectRepository;
 import com.mhgjoker.education.system.service.ExamService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,22 +32,29 @@ public class ExamServiceImpl implements ExamService {
     private final QuestionRepository questionRepository;
     private final GradeRepository gradeRepository;
     private final SubjectRepository subjectRepository;
-
+    private final ExamMapper examMapper;
     @Override
-    public Page<ExamEntity> list(Integer pageNum, Integer pageSize) {
+    public PaginatedResponse<ExamLazyResponse> list(Integer pageNum, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNum, pageSize);
-        return examRepository.findAll(pageable);
+        var rs = examRepository.findAll(pageable);
+
+        return new PaginatedResponse<>(
+                rs.getContent().stream().map(examMapper::entityToLazyResponse).toList(),
+                rs.getTotalPages(),
+                rs.getNumber(),
+                rs.getTotalElements()
+        );
     }
 
     @Override
-    public ExamEntity detail(Long id) {
-        return examRepository
+    public ExamResponse detail(Long id) {
+        return examMapper.entityToResponse(examRepository
                 .findById(id, NamedEntityGraph.fetching("exam_with_grade_subject_questions"))
-                .orElse(null);
+                .orElse(null));
     }
 
     @Override
-    public ExamEntity saveOrUpdate(ExamRequest request) {
+    public ExamResponse saveOrUpdate(ExamRequest request) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -95,7 +101,7 @@ public class ExamServiceImpl implements ExamService {
         exam.setGrade(grade);
         exam.setSubject(subject);
         exam.setQuestions(new HashSet<>(questions));
-        return examRepository.save(exam);
+        return examMapper.entityToResponse(examRepository.save(exam));
     }
 
     @Override
