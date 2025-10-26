@@ -67,8 +67,8 @@ public class ExamResultServiceImpl implements ExamResultService {
     }
 
     @Override
-    public ExamResultEntity saveOrUpdate(ExamResultEntity examEntity) {
-        return examResultRepository.save(examEntity);
+    public ExamResultResponse saveOrUpdate(ExamResultEntity examEntity) {
+        return examResultMapper.entityToResponse(examResultRepository.save(examEntity));
     }
 
     @Override
@@ -122,9 +122,9 @@ public class ExamResultServiceImpl implements ExamResultService {
     }
 
     @Override
-    public ExamResultEntity detailByUserIdAndExamId(Long userId, Long examId) {
-        return examResultRepository
+    public ExamResultResponse detailByUserIdAndExamId(Long userId, Long examId) {
+        return examResultMapper.entityToResponse(examResultRepository
                 .findByUserIdAndExamId(userId, examId, NamedEntityGraph.fetching("exam_result_with_user_answers"))
-                .orElse(null);
+                .orElse(null));
     }
 }

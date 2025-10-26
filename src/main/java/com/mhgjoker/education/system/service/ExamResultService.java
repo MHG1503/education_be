@@ -15,11 +15,11 @@ public interface ExamResultService{
 
     ExamResultResponse detail(Long id);
 
-    ExamResultEntity saveOrUpdate(ExamResultEntity examEntity);
+    ExamResultResponse saveOrUpdate(ExamResultEntity examEntity);
 
     boolean deleteById(Long id);
 
     void submitExam(UserEntity user, ExamResultRequest request);
 
-    ExamResultEntity detailByUserIdAndExamId(Long userId, Long examId);
+    ExamResultResponse detailByUserIdAndExamId(Long userId, Long examId);
 }

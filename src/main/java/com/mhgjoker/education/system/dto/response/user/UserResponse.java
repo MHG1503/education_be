@@ -1,6 +1,5 @@
 package com.mhgjoker.education.system.dto.response.user;
 
-import com.mhgjoker.education.system.entity.RoleEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
