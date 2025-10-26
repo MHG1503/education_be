@@ -6,6 +6,7 @@ import com.mhgjoker.education.system.entity.UserEntity;
 import com.mhgjoker.education.system.service.ExamResultService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class ExamResultController {
     }
 
     @GetMapping("/list_by_admin")
-    @PreFilter("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> listByAdminRoleAndUserId(@RequestParam("userId") Long userId,
                                                       @RequestParam(name = "pageNum",required = false, defaultValue = "0") Integer pageNum,
                                                       @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize) {
@@ -34,9 +35,10 @@ public class ExamResultController {
     }
 
     @GetMapping("/detail_by_admin")
-    @PreFilter("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> detail(@RequestParam("userId") Long userId,
                                     @RequestParam("examId") Long examId) {
+        Long userIdTemp = userId;
         var rs = examResultService.detailByUserIdAndExamId(userId, examId);
         return ResponseEntity.ok(rs);
     }
