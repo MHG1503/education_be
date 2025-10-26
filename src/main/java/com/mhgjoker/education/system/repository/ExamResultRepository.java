@@ -24,6 +24,7 @@ public interface ExamResultRepository extends JpaRepository<ExamResultEntity, Lo
     nativeQuery = true)
     Object findByIdWithUserAnswerDetail(@Param("id") Long id);
 
+    @Query(value = " SELECT er FROM ExamResultEntity er WHERE er.user.id = :userId AND er.exam.id = :examId")
     Optional<ExamResultEntity> findByUserIdAndExamId(@Param("userId") Long userId,
                                                      @Param("examId") Long examId,
                                                      EntityGraph entityGraph);

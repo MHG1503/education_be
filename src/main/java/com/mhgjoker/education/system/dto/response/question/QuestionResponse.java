@@ -1,12 +1,10 @@
 package com.mhgjoker.education.system.dto.response.question;
 
-import com.mhgjoker.education.system.dto.request.option.OptionRequest;
 import com.mhgjoker.education.system.dto.response.option.OptionResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.Set;
 
 @Getter
