@@ -38,7 +38,6 @@ public class ExamResultController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> detail(@RequestParam("userId") Long userId,
                                     @RequestParam("examId") Long examId) {
-        Long userIdTemp = userId;
         var rs = examResultService.detailByUserIdAndExamId(userId, examId);
         return ResponseEntity.ok(rs);
     }
