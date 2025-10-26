@@ -1,15 +1,16 @@
 package com.mhgjoker.education.system.service;
 
+import com.mhgjoker.education.system.dto.response.user.UserResponse;
+import com.mhgjoker.education.system.entity.PaginatedResponse;
 import com.mhgjoker.education.system.entity.UserEntity;
-import org.springframework.data.domain.Page;
 
 public interface UserService{
 
-    Page<UserEntity> list(Integer pageNum, Integer pageSize);
+    PaginatedResponse<UserResponse> list(Long id, String fullname, String username, String email, Integer pageNum, Integer pageSize);
 
-    UserEntity detail(Long id);
+    UserResponse detail(Long id);
 
-    UserEntity saveOrUpdate(UserEntity userEntity);
+    UserResponse saveOrUpdate(UserEntity userEntity);
 
     boolean deleteById(Long id);
 }

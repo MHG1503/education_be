@@ -4,8 +4,10 @@ import com.mhgjoker.education.security.common.utils.CurrentUserUtils;
 import com.mhgjoker.education.system.dto.request.exam_result.ExamResultRequest;
 import com.mhgjoker.education.system.mapper.UserMapper;
 import com.mhgjoker.education.system.service.ExamResultService;
+import com.mhgjoker.education.system.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,7 +17,19 @@ public class UserController {
 
     private final CurrentUserUtils currentUserUtils;
     private final ExamResultService examResultService;
+    private final UserService userService;
     private final UserMapper userMapper;
+
+    @GetMapping("/list")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> list(@RequestParam(name = "id", required = false) Long id,
+                                  @RequestParam(name = "fullname", required = false) String fullname,
+                                  @RequestParam(name = "username", required = false) String username,
+                                  @RequestParam(name = "email", required = false) String email,
+                                  @RequestParam(name = "pageNum", required = false, defaultValue = "0") Integer pageNum,
+                                  @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize){
+        return ResponseEntity.ok(userService.list(id, fullname, username, email, pageNum,pageSize));
+    }
 
     @GetMapping("/profile")
     public ResponseEntity<?> profile(){
