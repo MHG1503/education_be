@@ -3,19 +3,21 @@ package com.mhgjoker.education.system.service.impl;
 import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
 import com.mhgjoker.education.system.dto.request.exam_result.ExamResultRequest;
 import com.mhgjoker.education.system.dto.request.user_answer.UserAnswerRequest;
+import com.mhgjoker.education.system.dto.response.exam_result.ExamResultLazyResponse;
+import com.mhgjoker.education.system.dto.response.exam_result.ExamResultResponse;
 import com.mhgjoker.education.system.entity.ExamResultEntity;
+import com.mhgjoker.education.system.entity.PaginatedResponse;
 import com.mhgjoker.education.system.entity.UserAnswerEntity;
 import com.mhgjoker.education.system.entity.UserEntity;
+import com.mhgjoker.education.system.mapper.ExamResultMapper;
 import com.mhgjoker.education.system.repository.ExamRepository;
 import com.mhgjoker.education.system.repository.ExamResultRepository;
 import com.mhgjoker.education.system.repository.OptionRepository;
 import com.mhgjoker.education.system.repository.QuestionRepository;
 import com.mhgjoker.education.system.service.ExamResultService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,24 +31,39 @@ public class ExamResultServiceImpl implements ExamResultService {
     private final ExamRepository examRepository;
     private final QuestionRepository questionRepository;
     private final OptionRepository optionRepository;
+    private final ExamResultMapper examResultMapper;
 
     @Override
-    public Page<ExamResultEntity> list(Integer pageNum, Integer pageSize) {
+    public PaginatedResponse<ExamResultLazyResponse> list(Integer pageNum, Integer pageSize) {
         Pageable pageable =  PageRequest.of(pageNum, pageSize);
-        return examResultRepository.findAll(pageable);
+        var rs = examResultRepository.findAll(pageable);
+
+        return new PaginatedResponse<>(
+                rs.getContent().stream().map(examResultMapper::entityToLazyResponse).toList(),
+                rs.getTotalPages(),
+                rs.getNumber(),
+                rs.getTotalElements()
+        );
     }
 
     @Override
-    public List<ExamResultEntity> listByUserId(Long userId, Integer pageNum, Integer pageSize) {
+    public PaginatedResponse<ExamResultLazyResponse> listByUserId(Long userId, Integer pageNum, Integer pageSize) {
         Pageable pageable =  PageRequest.of(pageNum, pageSize);
-        return examResultRepository.findByUserId(userId, pageable);
+        var rs = examResultRepository.findByUserId(userId, pageable);
+
+        return new PaginatedResponse<>(
+                rs.getContent().stream().map(examResultMapper::entityToLazyResponse).toList(),
+                rs.getTotalPages(),
+                rs.getNumber(),
+                rs.getTotalElements()
+        );
     }
 
     @Override
-    public ExamResultEntity detail(Long id) {
-        return examResultRepository
+    public ExamResultResponse detail(Long id) {
+        return examResultMapper.entityToResponse(examResultRepository
                 .findById(id, NamedEntityGraph.fetching("exam_result_with_user_answers"))
-                .orElse(null);
+                .orElse(null));
     }
 
     @Override

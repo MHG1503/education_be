@@ -1,19 +1,19 @@
 package com.mhgjoker.education.system.service;
 
 import com.mhgjoker.education.system.dto.request.exam_result.ExamResultRequest;
+import com.mhgjoker.education.system.dto.response.exam_result.ExamResultLazyResponse;
+import com.mhgjoker.education.system.dto.response.exam_result.ExamResultResponse;
 import com.mhgjoker.education.system.entity.ExamResultEntity;
+import com.mhgjoker.education.system.entity.PaginatedResponse;
 import com.mhgjoker.education.system.entity.UserEntity;
-import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public interface ExamResultService{
 
-    Page<ExamResultEntity> list(Integer pageNum, Integer pageSize);
+    PaginatedResponse<ExamResultLazyResponse> list(Integer pageNum, Integer pageSize);
 
-    List<ExamResultEntity> listByUserId(Long userId, Integer pageNum, Integer pageSize);
+    PaginatedResponse<ExamResultLazyResponse> listByUserId(Long userId, Integer pageNum, Integer pageSize);
 
-    ExamResultEntity detail(Long id);
+    ExamResultResponse detail(Long id);
 
     ExamResultEntity saveOrUpdate(ExamResultEntity examEntity);
 

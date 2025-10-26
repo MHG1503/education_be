@@ -1,6 +1,7 @@
 package com.mhgjoker.education.system.repository;
 
 import com.mhgjoker.education.system.entity.ExamResultEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface ExamResultRepository extends JpaRepository<ExamResultEntity, Long> {
     // Lấy tất cả lần làm bài của user
-    List<ExamResultEntity> findByUserId(@Param("userId") Long userId, Pageable pageable);
+    Page<ExamResultEntity> findByUserId(@Param("userId") Long userId, Pageable pageable);
 
     Optional<ExamResultEntity> findById(Long id, EntityGraph entityGraph);
 
