@@ -97,6 +97,7 @@ public class QuestionImportFile extends BaseImport<QuestionImportFile.QuestionEx
         @Override
         public void doAfterAllAnalysed(AnalysisContext context) {
             for (QuestionExcelDTO row : rows){
+                log.info("row Question: {}, content: {}, is_correct: {}",row.getQuestion(), row.getAnswers(), row.correctAnswer);
                 QuestionEntity question = new QuestionEntity();
                 question.setContent(row.question);
 

@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "options", uniqueConstraints = @UniqueConstraint(columnNames = {"question_id", "content"}))
+@Table(name = "options")
 public class OptionEntity extends BaseEntity{
 
     @Id
@@ -27,4 +27,7 @@ public class OptionEntity extends BaseEntity{
 
     @Column(name = "is_correct")
     private Boolean isCorrect;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 }

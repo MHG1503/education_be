@@ -37,6 +37,11 @@
 			<version>4.0.3</version>
 		</dependency>
 		<dependency>
+			<groupId>io.minio</groupId>
+			<artifactId>minio</artifactId>
+			<version>8.5.11</version>
+		</dependency>
+		<dependency>
 			<groupId>com.cosium.spring.data</groupId>
 			<artifactId>spring-data-jpa-entity-graph</artifactId>
 			<version>3.2.2</version>

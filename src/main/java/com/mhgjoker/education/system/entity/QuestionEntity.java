@@ -38,11 +38,12 @@ public class QuestionEntity extends BaseEntity{
 
     @Column(name = "mark")
     private Integer mark;
-
+    
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "question")
     private Set<OptionEntity> options;
 
     public QuestionEntity() {
         this.options = new HashSet<>();
     }
+
 }

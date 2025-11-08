@@ -20,9 +20,13 @@ public class QuestionRequest {
 
     private Long subjectId;
 
+    private Long gradeId;
+
     private String level;
 
     private Integer mark;
+
+    private String imageUrl;
 
     private Set<OptionRequest> options;
 }

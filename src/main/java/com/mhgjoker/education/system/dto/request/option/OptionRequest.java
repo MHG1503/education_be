@@ -18,4 +18,6 @@ public class OptionRequest {
     private String content;
 
     private Boolean isCorrect;
+
+    private String imageUrl;
 }

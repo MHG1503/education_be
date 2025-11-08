@@ -2,6 +2,7 @@ package com.mhgjoker.education.system.service.impl;
 
 import com.mhgjoker.education.system.dto.request.option.OptionRequest;
 import com.mhgjoker.education.system.entity.OptionEntity;
+import com.mhgjoker.education.system.integration.MinioChannel;
 import com.mhgjoker.education.system.repository.OptionRepository;
 import com.mhgjoker.education.system.repository.QuestionRepository;
 import com.mhgjoker.education.system.service.OptionService;
@@ -17,6 +18,7 @@ public class OptionServiceImpl implements OptionService {
 
     private final OptionRepository optionRepository;
     private final QuestionRepository questionRepository;
+    private final MinioChannel minioChannel;
 
     @Override
     public Page<OptionEntity> list(Integer pageNum, Integer pageSize) {
