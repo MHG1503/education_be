@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -55,6 +56,9 @@ public class ExamEntity extends BaseEntity{
     @JoinColumn(name = "subject_id")
     private SubjectEntity subject;
 
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "exam")
+    private List<ExamResultEntity> examResults;
+
     @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST})
     @JoinTable(
             name = "exams_question",
@@ -65,6 +69,9 @@ public class ExamEntity extends BaseEntity{
 
     @PreRemove
     private void removeBeforeDelete(){
+
+        examResults.forEach( er -> er.setExam(null));
+
         if(questions != null) {
             questions.clear();
         }
