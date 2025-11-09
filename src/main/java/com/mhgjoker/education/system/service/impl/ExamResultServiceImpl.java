@@ -5,10 +5,7 @@ import com.mhgjoker.education.system.dto.request.exam_result.ExamResultRequest;
 import com.mhgjoker.education.system.dto.request.user_answer.UserAnswerRequest;
 import com.mhgjoker.education.system.dto.response.exam_result.ExamResultLazyResponse;
 import com.mhgjoker.education.system.dto.response.exam_result.ExamResultResponse;
-import com.mhgjoker.education.system.entity.ExamResultEntity;
-import com.mhgjoker.education.system.entity.PaginatedResponse;
-import com.mhgjoker.education.system.entity.UserAnswerEntity;
-import com.mhgjoker.education.system.entity.UserEntity;
+import com.mhgjoker.education.system.entity.*;
 import com.mhgjoker.education.system.mapper.ExamResultMapper;
 import com.mhgjoker.education.system.repository.ExamRepository;
 import com.mhgjoker.education.system.repository.ExamResultRepository;
@@ -20,8 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -84,40 +81,55 @@ public class ExamResultServiceImpl implements ExamResultService {
     @Override
     public void submitExam(UserEntity user, ExamResultRequest request) {
         ExamResultEntity examResult = new ExamResultEntity();
-        var exam = examRepository
-                .findById(request.examId)
-                .orElseThrow(() -> new RuntimeException("Khong tim thay thong tin bai kiem tra!"));
+        var exam = examRepository.findById(request.examId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy bài kiểm tra!"));
 
         examResult.setExam(exam);
         examResult.setUser(user);
         examResult.setStartedAt(request.getStartedAt());
         examResult.setFinishedAt(request.getFinishedAt());
+        examResult.setUserAnswers(new ArrayList<>());
 
-        List<UserAnswerRequest> userAnswerRequests = request.getAnswerRequests();
-        Double totalMark = 0.0;
-        for(var answer : userAnswerRequests){
-            var question = questionRepository.findById(answer.questionId).orElse(null);
+        Set<QuestionEntity> examQuestions = exam.getQuestions();
+
+        Map<Long, QuestionEntity> questionMap = examQuestions.stream()
+                .collect(Collectors.toMap(QuestionEntity::getId, q -> q));
+
+        double totalExamMark = examQuestions.stream()
+                .mapToDouble(QuestionEntity::getMark)
+                .sum();
+
+        double userMark = 0.0;
+        Set<Long> answeredSet = new HashSet<>();
+
+        for (var answer : request.getAnswerRequests()) {
+
+            if (!answeredSet.add(answer.questionId)) continue;
+
+            var question = questionMap.get(answer.questionId);
+            if (question == null) continue;
+
             var selectedOption = optionRepository.findById(answer.selectedOptionId).orElse(null);
-            if(question == null || selectedOption == null){
-                continue;
-            }
+            if (selectedOption == null) continue;
+
+            if (!selectedOption.getQuestion().getId().equals(question.getId())) continue;
+
             UserAnswerEntity userAnswer = new UserAnswerEntity();
             userAnswer.setExamResult(examResult);
             userAnswer.setQuestion(question);
             userAnswer.setSelectedOption(selectedOption);
             userAnswer.setIsCorrect(selectedOption.getIsCorrect());
 
-            if(userAnswer.getIsCorrect()){
-                var mark = question.getMark();
-                totalMark += mark;
+            if (Boolean.TRUE.equals(selectedOption.getIsCorrect())) {
+                userMark += question.getMark();
             }
-            if(examResult.getUserAnswers() == null){
-                examResult.setUserAnswers(new ArrayList<>());
-            }
+
             examResult.getUserAnswers().add(userAnswer);
         }
-        examResult.setScore(totalMark);
 
+        double finalScore = (userMark / totalExamMark) * 10.0;
+
+        examResult.setScore(finalScore);
         examResultRepository.save(examResult);
     }
 
